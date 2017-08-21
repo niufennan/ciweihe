@@ -1,21 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>刺猬河 | 后台管理----首页</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="" name="description" />
-    <meta content="双鱼座的牛" name="author" />
-
-    <link href="media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/style-metro.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/style.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
-    <link href="media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
-
+<head th:include="common/basecss::commonHead('首页','','')">
 </head>
 <body  class="page-header-fixed">
     <div th:replace="common/navbar::navbar"></div>
@@ -23,27 +8,12 @@
         <div th:replace="common/left::menu"></div>
         <div class="page-content">
             <div class="container-fluid">
-                <div th:replace="common/breadcrumb::breadcrumb"></div>
+                <div th:replace="common/breadcrumb::breadcrumb('home','Home','index.html','首页','#','')"></div>
                 fasgdhtjgfjyktuyjsdgfhbdf
             </div>
         </div>
     </div>
     <div th:replace="common/footer ::footer"></div>
-    <script src="media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-    <script src="media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 
-    <script src="media/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
-    <script src="media/js/bootstrap.min.js" type="text/javascript"></script>
-
-    <script src="media/js/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="media/js/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="media/js/jquery.cookie.min.js" type="text/javascript"></script>
-    <script src="media/js/jquery.uniform.min.js" type="text/javascript" ></script>
-    <script src="media/js/app.js" type="text/javascript"></script>
-    <script>
-        jQuery(document).ready(function() {
-            App.init();
-        });
-    </script>
 </body>
 </html>

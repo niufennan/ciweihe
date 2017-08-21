@@ -1,16 +1,18 @@
-<div th:fragment="breadcrumb" class="row-fluid">
+<div th:fragment="breadcrumb(icon,firstMenuVal,firstMenuPath,secondMenuVal,secondMenuPath,desc)" class="row-fluid">
     <div class="span12">
         <!-- BEGIN PAGE TITLE & BREADCRUMB-->
-        <h3 class="page-title">
-            Dashboard <small>statistics and more</small>
+        <h3 class="page-title" >
+            <span th:text="${secondMenuVal}">Dashboard</span>
+             <small th:text="${desc}">statistics and more</small>
         </h3>
         <ul class="breadcrumb">
             <li>
-                <i class="icon-home"></i>
-                <a href="index.html">Home</a>
+                <i class="'icon-'+${icon}"></i>
+                <a th:href="${firstMenuPath}" th:text="${firstMenuVal}"></a>
                 <i class="icon-angle-right"></i>
             </li>
-            <li><a href="#">Dashboard</a></li>
+
+            <li><a th:href="${secondMenuPath}" th:text="${secondMenuVal}">首页</a></li>
             <li class="pull-right no-text-shadow">
                 <div id="dashboard-report-range" class="dashboard-date-range tooltips no-tooltip-on-touch-device responsive" data-tablet="" data-desktop="tooltips" data-placement="top" data-original-title="Change dashboard date range">
                     <i class="icon-calendar"></i>

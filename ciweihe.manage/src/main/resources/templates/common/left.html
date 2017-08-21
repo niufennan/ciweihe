@@ -12,8 +12,8 @@
                 </div>
             </form>
         </li>
-        <li class="start active ">
-            <a href="#">
+        <li class="start active " >
+            <a href="/index">
                 <i class="icon-home"></i>
                 <span class="title">首页</span>
                 <span class="selected"></span>
@@ -26,8 +26,8 @@
                 <span class="arrow "></span>
             </a>
             <ul class="sub-menu">
-                <li >
-                    <a href="#">微信菜单设置</a>
+                <li>
+                    <a href="/wechat/menu">微信菜单设置</a>
                 </li>
                 <li >
                     <a href="layout_horizontal_menu1.html">
@@ -80,4 +80,23 @@
             </ul>
         </li>
     </ul>
+    <script type="text/javascript">
+        var cpath=window.location.href.replace("http://","").split("/");
+        $(".page-sidebar-menu li").each(function () {
+            $(this).removeClass("start").removeClass("active")
+        })
+        if(cpath[1]=="index"){
+            $(".page-sidebar-menu li").eq(2).addClass("start").addClass("active")
+        }else if(cpath[1]=="wechat"){
+            $(".page-sidebar-menu li").eq(3).addClass("start").addClass("active")
+        }
+        //子菜单
+        $(".sub-menu li").each(function () {
+                if(cpath.length>2) {
+                    if ($(this).find("a").eq(0).attr("href") == "/"+cpath[1] + "/" + cpath[2]) {
+                        $(this).addClass("active");
+                    }
+                }
+        })
+    </script>
 </div>
