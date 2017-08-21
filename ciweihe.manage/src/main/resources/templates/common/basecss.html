@@ -1,9 +1,9 @@
 <head th:fragment='commonHead(title,description,keywords)'>
     <meta charset="UTF-8"/>
-    <title>刺猬河 | 后台管理----${title}}</title>
+    <title th:text="'刺猬河 | 后台管理----'+${title}"></title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="${description}}" name="description" />
-    <meta name="keywords" content="${keywords}"/>
+    <meta th:content="${description}" name="description" />
+    <meta name="keywords" th:content="${keywords}"/>
     <meta content="双鱼座的牛" name="author" />
     <link href="/media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="/media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>

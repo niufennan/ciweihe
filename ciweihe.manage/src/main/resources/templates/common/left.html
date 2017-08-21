@@ -85,18 +85,18 @@
         $(".page-sidebar-menu li").each(function () {
             $(this).removeClass("start").removeClass("active")
         })
-        if(cpath[1]=="index"){
+        if(cpath[1]=="index"||cpath[1]==""||cpath.length==1){
             $(".page-sidebar-menu li").eq(2).addClass("start").addClass("active")
         }else if(cpath[1]=="wechat"){
             $(".page-sidebar-menu li").eq(3).addClass("start").addClass("active")
         }
         //子菜单
         $(".sub-menu li").each(function () {
-                if(cpath.length>2) {
-                    if ($(this).find("a").eq(0).attr("href") == "/"+cpath[1] + "/" + cpath[2]) {
-                        $(this).addClass("active");
-                    }
+            if(cpath.length>2) {
+                if ($(this).find("a").eq(0).attr("href") == "/"+cpath[1] + "/" + cpath[2]) {
+                    $(this).addClass("active");
                 }
+            }
         })
     </script>
 </div>
