@@ -19,12 +19,6 @@ public class HomeController {
     @RequestMapping(value = {"/","index"})
     public String index(Model model, HttpSession session){
         UserDetails userDetails= (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        model.addAttribute("name", userDetails.getUsername());
-       Enumeration<String> names= session.getAttributeNames();
-      while (names.hasMoreElements()){
-           System.out.println(names.nextElement());
-      }
-       System.out.println(((SecurityContext)session.getAttribute("SPRING_SECURITY_CONTEXT")).getAuthentication().getName());
         return "home/index";
     }
 }
