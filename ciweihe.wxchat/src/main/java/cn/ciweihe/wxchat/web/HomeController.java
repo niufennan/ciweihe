@@ -23,7 +23,7 @@ public class HomeController {
         model.addAttribute("time1",System.currentTimeMillis());
         Thread.sleep(3000);
         model.addAttribute("time2",System.currentTimeMillis());
-
+        System.out.println("========================");
         model.addAttribute("token",wxChatService.getToken());
 
         return "home/index";

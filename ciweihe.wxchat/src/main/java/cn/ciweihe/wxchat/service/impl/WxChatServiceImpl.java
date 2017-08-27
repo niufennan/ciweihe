@@ -1,7 +1,6 @@
 package cn.ciweihe.wxchat.service.impl;
 
 import cn.ciweihe.wxchat.service.WxChatService;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -22,23 +21,18 @@ public class WxChatServiceImpl implements WxChatService {
 
     private static String token;
     private static long expiresDate;
+    private final String urlFormat="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
     @Override
     public String getToken() {
-        /*if(expiresDate<(System.currentTimeMillis())){
-            return WxChatServiceImpl.token;
-        }*/
-        //超出时间
-        String url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx26d636fe508d7b96&secret=619cd54ffd5bbdf21da47f35f5bb5e36";
-        String result=sendPost(url,null);
+        if (expiresDate==0||"".equals(WxChatServiceImpl.token)|| expiresDate > (System.currentTimeMillis() / 1000 + 7200)) {
 
-
-        JSONObject jsonObject= JSONObject.parseObject(result);
-
-        System.out.println(result);
-        System.out.println(jsonObject.containsKey("errcode"));
-        System.out.println(jsonObject.get("access_token"));
-        System.out.println(jsonObject.get("expires_in"));
-
+            //超出时间
+            String url = String.format(urlFormat, "wx26d636fe508d7b96", "619cd54ffd5bbdf21da47f35f5bb5e36");
+            String result = sendGet(url, null);
+            JSONObject jsonObject = JSONObject.parseObject(result);
+            expiresDate = System.currentTimeMillis() / 1000 + Integer.parseInt(jsonObject.get("expires_in").toString());
+            WxChatServiceImpl.token = jsonObject.get("access_token").toString();
+        }
         return WxChatServiceImpl.token;
     }
 
@@ -60,9 +54,9 @@ public class WxChatServiceImpl implements WxChatService {
             // 获取所有响应头字段
             Map<String, List<String>> map = connection.getHeaderFields();
             // 遍历所有的响应头字段
-            for (String key : map.keySet()) {
-                System.out.println(key + "--->" + map.get(key));
-            }
+            //for (String key : map.keySet()) {
+            //    System.out.println(key + "--->" + map.get(key));
+            //}
             // 定义 BufferedReader输入流来读取URL的响应
             in = new BufferedReader(new InputStreamReader(
                     connection.getInputStream()));
