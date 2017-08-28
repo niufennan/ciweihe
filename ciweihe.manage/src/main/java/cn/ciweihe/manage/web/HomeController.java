@@ -1,5 +1,7 @@
 package cn.ciweihe.manage.web;
 
+import cn.ciweihe.manage.service.wxchat.WxChatService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +18,13 @@ import java.util.Enumeration;
 @Controller
 public class HomeController {
 
+    @Autowired
+    WxChatService wxChatService;
+
     @RequestMapping(value = {"/","index"})
     public String index(Model model, HttpSession session){
         UserDetails userDetails= (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("token",wxChatService.getToken());
         return "home/index";
     }
 }

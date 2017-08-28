@@ -1,32 +1,32 @@
-package cn.ciweihe.wxchat.service.impl;
+package cn.ciweihe.manage.service.wxchat.impl;
 
-import cn.ciweihe.wxchat.service.WxChatService;
-import cn.ciweihe.wxchat.utils.PropsUtil;
+import cn.ciweihe.manage.entity.wechat.MenuButton;
+import cn.ciweihe.manage.service.wxchat.WxChatService;
+import cn.ciweihe.manage.utils.PropsUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by admin on 2017/8/25.
+ * Created by admin on 2017/8/28.
  */
 @Service
-public class WxChatServiceImpl implements WxChatService {
-
-    private final String urlFormat="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
+public class WxChatServiceImpl implements WxChatService
+{
     private final String propertieName="wxchat.properties";
+    private final String urlFormat="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
     @Override
     public String getToken() {
         long expiresDate=PropsUtil.getLong(propertieName,"expiresDate");
         String token=PropsUtil.getString(propertieName,"accessToken");
-        if (expiresDate==0||"".equals(token)|| expiresDate > (System.currentTimeMillis() / 1000 + 7200)) {
+       if (expiresDate==0||"".equals(token)|| expiresDate > (System.currentTimeMillis() / 1000 + 7200)) {
             //超出时间
             String url = String.format(urlFormat, PropsUtil.getString(propertieName,"appid"),PropsUtil.getString("wxchat.properties","appsecret"));
             String result = sendGet(url, null);
@@ -36,6 +36,22 @@ public class WxChatServiceImpl implements WxChatService {
 
         }
         return PropsUtil.getString(propertieName,"accessToken");
+    }
+
+    @Override
+    public Map<String,Object> getWxChatButton() {
+        String menuUrlFormat="https://api.weixin.qq.com/cgi-bin/menu/get?access_token=%s";
+        String result=sendGet(String.format(menuUrlFormat,PropsUtil.getString(propertieName,"accessToken")),null);
+        System.out.println(result);
+        JSONObject jsonObject=JSONObject.parseObject(result);
+        Map<String,Object> map=new HashMap<>();
+        if(jsonObject.containsKey("errcode")){
+            map.put("error","接口没有此权限");
+        }else{
+            map.put("menu",new MenuButton());
+        }
+
+        return map;
     }
 
     public static String sendGet(String url, String param) {
@@ -78,65 +94,6 @@ public class WxChatServiceImpl implements WxChatService {
                 }
             } catch (Exception e2) {
                 e2.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-    /**
-     * 向指定 URL 发送POST方法的请求
-     *
-     * @param url
-     *            发送请求的 URL
-     * @param param
-     *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
-     * @return 所代表远程资源的响应结果
-     */
-    public static String sendPost(String url, String param) {
-        PrintWriter out = null;
-        BufferedReader in = null;
-        String result = "";
-        try {
-            URL realUrl = new URL(url);
-            // 打开和URL之间的连接
-            URLConnection conn = realUrl.openConnection();
-            // 设置通用的请求属性
-            conn.setRequestProperty("accept", "*/*");
-            conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("user-agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-            // 发送POST请求必须设置如下两行
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            // 获取URLConnection对象对应的输出流
-            out = new PrintWriter(conn.getOutputStream());
-            // 发送请求参数
-            out.print(param);
-            // flush输出流的缓冲
-            out.flush();
-            // 定义BufferedReader输入流来读取URL的响应
-            in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null) {
-                result += line;
-            }
-        } catch (Exception e) {
-            System.out.println("发送 POST 请求出现异常！"+e);
-            e.printStackTrace();
-        }
-        //使用finally块来关闭输出流、输入流
-        finally{
-            try{
-                if(out!=null){
-                    out.close();
-                }
-                if(in!=null){
-                    in.close();
-                }
-            }
-            catch(IOException ex){
-                ex.printStackTrace();
             }
         }
         return result;
